@@ -1,5 +1,6 @@
 # istio-fault-operator
-// TODO(user): Add simple overview of use/purpose
+NOTE: running locally on kind cluster with a nodeport configuration pointing to 30000, deploy of the Service reflects the nodeport setup
+curl -v  -H "x-envoy-fault-abort-request: 501" -H "x-envoy-fault-abort-request-percentage: 100" http://localhost:30000/index
 
 ## Description
 // TODO(user): An in-depth paragraph about your project and overview of use
