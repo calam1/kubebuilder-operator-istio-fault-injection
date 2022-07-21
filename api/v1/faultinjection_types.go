@@ -35,10 +35,8 @@ type FaultInjectionSpec struct {
 
 	// Foo is an example field of FaultInjection. Edit faultinjection_types.go to remove/update
 	// Foo string `json:"foo,omitempty"`
-	Name            string `json:"name,omitempty"`
-	Namespace       string `json:"namespace,omitempty"`
-	AbortHttpStatus int    `json:"abortHttpStatus,omitempty"`
-	Percentage      int    `json:"percentage,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // FaultInjectionStatus defines the observed state of FaultInjection

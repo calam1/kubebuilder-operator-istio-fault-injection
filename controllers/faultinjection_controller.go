@@ -113,31 +113,28 @@ func (r *FaultInjectionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 func (r *FaultInjectionReconciler) checkEnvoyFilter(instance *resiliencyv1.FaultInjection, req ctrl.Request, logger logr.Logger) (ctrl.Result, error) {
 	switch instance.Status.Phase {
 	case resiliencyv1.PhasePending:
-		// logger.Info("Transitioning state to create EnvoyFilter")
 		instance.Status.Phase = resiliencyv1.PhaseCreated
 	case resiliencyv1.PhaseCreated:
-		// logger.Info("EnvoyFilter", "PHASE:", instance.Status.Phase)
 		query := &clientNetworking.EnvoyFilter{}
-		// query := clientNetworking.VirtualService{}
 
-		// check if virtual service already exists
+		// check if envoyfilter already exists
 		lookupKey := types.NamespacedName{
-			// Name:      instance.GetIstioResourceName(),
-			// Namespace: instance.GetNamespace(),
-			Name:      "python-api-faultinjection",
-			Namespace: "default",
+			Name:      instance.Spec.Name,
+			Namespace: instance.Spec.Namespace,
+			// Name:      "python-api-faultinjection",
+			// Namespace: "default",
 		}
 
 		err := r.Get(context.TODO(), lookupKey, query)
 		if err != nil && errors.IsNotFound(err) {
 			// logger.Info("virtual service not found but should exist", "lookup key", lookupKey, "error", err)
-			// virtual service got deleted or hasn't been created yet
+			// envoyfilter got deleted or hasn't been created yet
 			// create one now
 			vs := faultinjection.CreateFaultInjectionEnvoyFilter(instance)
 			logger.Info("after creating fault injection envoy filter")
 			err = ctrl.SetControllerReference(instance, vs, r.Scheme)
 			if err != nil {
-				logger.Info("Error setting controller reference", err)
+				logger.Error(err, "Error setting controller reference")
 				return ctrl.Result{}, err
 			}
 
@@ -153,16 +150,12 @@ func (r *FaultInjectionReconciler) checkEnvoyFilter(instance *resiliencyv1.Fault
 			return ctrl.Result{}, err
 		} else {
 			// don't requeue, it will happen automatically when
-			// virtual service status changes
+			// envoyfilter status changes
 			return ctrl.Result{}, nil
 		}
 
 	default:
 		logger.Info("Default switch EnvoyFilter")
-
-		// more fields related to virtual service status can be checked
-		// see more at https://pkg.go.dev/istio.io/api/meta/v1alpha1#IstioStatus
-
 	}
 
 	return ctrl.Result{}, nil

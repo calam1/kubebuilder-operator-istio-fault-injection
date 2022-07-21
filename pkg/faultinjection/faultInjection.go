@@ -18,9 +18,8 @@ func CreateFaultInjectionEnvoyFilter(instance *resiliencyv1.FaultInjection) *cli
 
 	return &clientnetworking.EnvoyFilter{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "fault-injection",
-			Namespace: "default",
-			// Labels: ,
+			Name:      instance.Spec.Name,
+			Namespace: instance.Spec.Namespace,
 		},
 		Spec: v1alpha3.EnvoyFilter{
 			WorkloadSelector: &v1alpha3.WorkloadSelector{

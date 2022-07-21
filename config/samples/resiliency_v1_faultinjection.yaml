@@ -4,6 +4,4 @@ metadata:
   name: faultinjection-sample
 spec:
   name: "python-api-faultinjection"
-  namespace: "default"
-  percentage: 100
-  abortHttpStatus: 500
+  namespace: "resiliency-dev"
