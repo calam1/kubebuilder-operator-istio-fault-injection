@@ -1,0 +1,16 @@
+domain: grainger.com
+layout:
+- go.kubebuilder.io/v3
+projectName: istio-fault-operator
+repo: grainger.com
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: grainger.com
+  group: resiliency
+  kind: FaultInjection
+  path: grainger.com/api/v1
+  version: v1
+version: "3"
